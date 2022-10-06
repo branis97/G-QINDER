@@ -38,13 +38,13 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
-            CMD_BUILD: pyinstaller --onefile main.py --name qinder-${{ github.ref }}
-            OUT_FILE_NAME: qinder-${{ github.ref }}
+            CMD_BUILD: pyinstaller --onefile main.py --name qinder-${ github.ref_name }}
+            OUT_FILE_NAME: qinder-${{ github.ref_name }}
             ASSET_MIME: application/x-mach-binary
           - os: windows-2019
             TARGET: windows
-            CMD_BUILD: pyinstaller --onefile main.py --name qinder-${{ github.ref }}
-            OUT_FILE_NAME: qinder-${{ github.ref }}.exe
+            CMD_BUILD: pyinstaller --onefile main.py --name qinder-${{ github.ref_name }}
+            OUT_FILE_NAME: qinder-${{ github.ref_name }}.exe
             ASSET_MIME: application/vnd.microsoft.portable-executable
     steps:
     - uses: actions/checkout@v1
