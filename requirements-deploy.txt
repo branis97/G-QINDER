@@ -1,0 +1,2 @@
+biopython==1.70
+pyinstaller==5.4.1
