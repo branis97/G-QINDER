@@ -65,8 +65,8 @@ if __name__ == "__main__":
     file_name = os.path.split(input_file)[-1]
     file_fasta = file_name.split(".")
 
-    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window:" + str(window) + "-score:" + str(
-        score) + "-offset:" + str(offset) + "-angle:" + str(angle) + "-radius:" + str(radius) + ".txt")
+    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + "-score-" + str(
+        score) + "-offset-" + str(offset) + "-angle-" + str(angle) + "-radius-" + str(radius) + ".txt")
 
     if DIR in OPF:
         print('\nRe-run of Qinder on same input file\n')
