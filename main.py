@@ -54,7 +54,7 @@ def main(argv):
 if __name__ == "__main__":
     try:
         input_file, output_file, window, score, offset, angle, radius = main(sys.argv[1:])
-        file_name = input_file.split("/")[-1]
+        file_name = os.path.split(input_file)[-1]
         name = file_name.split(".")
     except Exception as e:
         print('Invalid params ' + '(' + str(e) + ')')
@@ -62,16 +62,16 @@ if __name__ == "__main__":
 
     OPF = os.listdir(output_file)
     DIR = "Results_" + str(name[0])
-    file_name = input_file.split("/")[-1]
+    file_name = os.path.split(input_file)[-1]
     file_fasta = file_name.split(".")
 
-    _new_result_dir = output_file + "/" + DIR + "/" + file_fasta[0] + "-window:" + str(window) + "-score:" + str(
-        score) + "-offset:" + str(offset) + "-angle:" + str(angle) + "-radius:" + str(radius) + ".txt"
+    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window:" + str(window) + "-score:" + str(
+        score) + "-offset:" + str(offset) + "-angle:" + str(angle) + "-radius:" + str(radius) + ".txt")
 
     if DIR in OPF:
         print('\nRe-run of Qinder on same input file\n')
     else:
-        os.makedirs(output_file + "/" + DIR + "/", mode=0o777)
+        os.makedirs(os.path.join(output_file, DIR), mode=0o777)
         print("\nCreating new result file\n")
 
     plot = []
