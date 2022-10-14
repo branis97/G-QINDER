@@ -19,8 +19,9 @@ def main(argv):
     _offset = 5
     _angle = 15
     _radius = 3
+    _all_score = False
     try:
-        opts, args = getopt.getopt(argv, "i:o:w:s:f:a:r:")
+        opts, args = getopt.getopt(argv, "i:o:w:s:x:f:a:r:")
     except getopt.GetoptError:
         print(
             '-i <input_file> -o <output_repository> -w <window> -s <score threshold> -f <offset> -a <angle> '
@@ -30,7 +31,7 @@ def main(argv):
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print('To run Qinder use the command line: \n')
-            print('-i <input_file> -o <output_repository> -w <window> -s <score threshold> -f <offset>'
+            print('-i <input_file> -o <output_repository> -w <window> -s/x <score threshold> -f <offset>'
                   ' -a <angle> -r <radius>\n')
             sys.exit()
         elif opt in ("-i", "--input"):
@@ -47,13 +48,17 @@ def main(argv):
             _angle = arg
         elif opt in ("-r", "--radius"):
             _radius = arg
+        elif opt in ("-x", "--all-score"):
+            _score = arg
+            _all_score = True
 
-    return _input_file, _output_file, int(_window), float(_score), int(_offset), int(_angle), int(_radius)
+    return _input_file, _output_file, int(_window), float(_score), int(_offset), int(_angle), int(_radius), bool(
+        _all_score)
 
 
 if __name__ == "__main__":
     try:
-        input_file, output_file, window, score, offset, angle, radius = main(sys.argv[1:])
+        input_file, output_file, window, score, offset, angle, radius, is_all_score = main(sys.argv[1:])
         file_name = os.path.split(input_file)[-1]
         name = file_name.split(".")
     except Exception as e:
@@ -65,7 +70,9 @@ if __name__ == "__main__":
     file_name = os.path.split(input_file)[-1]
     file_fasta = file_name.split(".")
 
-    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + "-score-" + str(
+    score_file_name = "-score(all)-" if is_all_score else "-score-"
+
+    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + score_file_name + str(
         score) + "-offset-" + str(offset) + "-angle-" + str(angle) + "-radius-" + str(radius) + ".txt")
 
     if DIR in OPF:
@@ -83,7 +90,7 @@ if __name__ == "__main__":
     startTime = time.time()
 
     _qinder = Qinder()
-    res = _qinder.qinder_app(file_in, window, score, offset, angle, radius)
+    res = _qinder.qinder_app(file_in, window, score, offset, angle, radius, is_all_score)
 
     for key, value in res.items():
         result_file.write('%s\t%s\n' % (key, value))

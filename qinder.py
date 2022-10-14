@@ -70,7 +70,7 @@ def sequence_score(line, angle, radius):
 class Qinder:
 
     @staticmethod
-    def qinder_app(input_file, window, score, offset, angle, radius):
+    def qinder_app(input_file, window, score, offset, angle, radius, is_all_score):
 
         limit = window
         offset = offset
@@ -82,7 +82,11 @@ class Qinder:
         whole_sequence = list_seq[0]
         for _offset in range(0, int(len(whole_sequence)), offset):
             _sequence, _score = sequence_score(whole_sequence[_offset:(limit + _offset)], angle, radius)
-            if _score > score:
-                result_dict[str(_sequence)] = _score
+            if is_all_score:
+                if _score > score or -score > _score:
+                    result_dict[str(_sequence)] = _score
+            else:
+                if _score > score:
+                    result_dict[str(_sequence)] = _score
 
         return result_dict
