@@ -110,8 +110,8 @@ class Qinder:
                                                                          radius)
 
             if _score > score:
-                result_dict_g[str(_sequence)] = _score, _g4_score_g
+                result_dict_g[str(_sequence)] = _offset, _score, _g4_score_g
             if is_all_score and -score > _score:
-                result_dict_c[str(_sequence)] = _score, _g4_score_c
+                result_dict_c[str(_sequence)] = _offset, _score, _g4_score_c
 
         return result_dict_g, result_dict_c

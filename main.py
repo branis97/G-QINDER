@@ -58,8 +58,8 @@ def main(argv):
 
 def file_write(results, file):
     for key, value in results.items():
-        (found_value, g4_found_value) = value
-        file.write('%s\t\t\t%s\t\t\t%s\n' % (key, found_value, g4_found_value))
+        (position, found_value, g4_found_value) = value
+        file.write('%s\t%s\t\t\t%s\t\t\t%s\n' % (position, key, found_value, g4_found_value))
 
 
 if __name__ == "__main__":
