@@ -24,15 +24,15 @@ def main(argv):
         opts, args = getopt.getopt(argv, "i:o:w:s:x:f:a:r:")
     except getopt.GetoptError:
         print(
-            '-i <input_file> -o <output_repository> -w <window> -s <score threshold> -f <offset> -a <angle> '
-            '-r <radius>\n')
+            '-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
+            '-f <offset> -a <angle> -r <radius>\n')
         sys.exit(1)
 
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print('To run Qinder use the command line: \n')
-            print('-i <input_file> -o <output_repository> -w <window> -s/x <score threshold> -f <offset>'
-                  ' -a <angle> -r <radius>\n')
+            print('-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
+                  '-f <offset> -a <angle> -r <radius>\n')
             sys.exit()
         elif opt in ("-i", "--input"):
             _input_file = arg
