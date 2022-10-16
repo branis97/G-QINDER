@@ -56,6 +56,12 @@ def main(argv):
         _all_score)
 
 
+def file_write(results, file):
+    for key, value in results.items():
+        (found_value, g4_found_value) = value
+        file.write('%s\t\t\t%s\t\t\t%s\n' % (key, found_value, g4_found_value))
+
+
 if __name__ == "__main__":
     try:
         input_file, output_file, window, score, offset, angle, radius, is_all_score = main(sys.argv[1:])
@@ -70,10 +76,14 @@ if __name__ == "__main__":
     file_name = os.path.split(input_file)[-1]
     file_fasta = file_name.split(".")
 
-    score_file_name = "-score(all)-" if is_all_score else "-score-"
+    score_file_names = ["-score(G)-", "-score(C)-"] if is_all_score else ["-score-"]
 
-    _new_result_dir = os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + score_file_name + str(
-        score) + "-offset-" + str(offset) + "-angle-" + str(angle) + "-radius-" + str(radius) + ".txt")
+    _new_result_dirs = []
+
+    for _dir_name in score_file_names:
+        _new_result_dirs.append(
+            os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + _dir_name + str(
+                score) + "-offset-" + str(offset) + "-angle-" + str(angle) + "-radius-" + str(radius) + ".txt"))
 
     if DIR in OPF:
         print('\nRe-run of Qinder on same input file\n')
@@ -86,14 +96,18 @@ if __name__ == "__main__":
     file_in = open(input_file, "r")
     print("Input file:", file_fasta[0], "\n")
 
-    result_file = open(_new_result_dir, "w")
+    result_file_g = open(_new_result_dirs[0], "w")
+
+    result_file_c = is_all_score and open(_new_result_dirs[1], "w")
+
     startTime = time.time()
 
     _qinder = Qinder()
-    res = _qinder.qinder_app(file_in, window, score, offset, angle, radius, is_all_score)
+    res_g, res_c = _qinder.qinder_app(file_in, window, score, offset, angle, radius, is_all_score)
 
-    for key, value in res.items():
-        result_file.write('%s\t%s\n' % (key, value))
+    file_write(res_g, result_file_g)
+    is_all_score and file_write(res_c, result_file_c)
+
     file_in.close()
 
     fin = time.time()
@@ -101,4 +115,5 @@ if __name__ == "__main__":
     print("\nResults generated in:", round(fin - startTime, 2), "sec")
     print("\nResults stored in:", DIR)
 
-    result_file.close()
+    result_file_g.close()
+    is_all_score and result_file_c.close()
