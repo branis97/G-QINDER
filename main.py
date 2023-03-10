@@ -63,8 +63,8 @@ def file_write(results, file, _is_multiplication_enabled):
     for key, value in results.items():
         (position, found_value, g4_found_value) = value
         file.write('%s\t%s\t\t\t%s\t\t\t%s\n' % (
-            position, key, found_value, g4_found_value)) if _is_multiplication_enabled else file.write(
-            '%s\t%s\t\t\t%s\n' % (position, key, found_value))
+            position, key, round(found_value, 2), g4_found_value)) if _is_multiplication_enabled else file.write(
+            '%s\t%s\t\t\t%s\n' % (position, key, round(found_value, 2)))
 
 
 if __name__ == "__main__":
