@@ -18,22 +18,21 @@ def main(argv):
     _score = 1.2
     _offset = 5
     _angle = 15
-    _radius = 3
     _all_score = False
     _is_multiplication_enabled = False
     try:
-        opts, args = getopt.getopt(argv, "i:o:w:s:x:f:a:r:m:")
+        opts, args = getopt.getopt(argv, "i:o:w:s:x:f:a:m:")
     except getopt.GetoptError:
         print(
             '-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
-            '-f <offset> -a <angle> -r <radius> -m <multiplication show if "true">\n')
+            '-f <offset> -a <angle> -m <multiplication show if "true">\n')
         sys.exit(1)
 
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print('To run Qinder use the command line: \n')
             print('-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
-                  '-f <offset> -a <angle> -r <radius> -m <multiplication show if "true">\n')
+                  '-f <offset> -a <angle> -m <multiplication show if "true">\n')
             sys.exit()
         elif opt in ("-i", "--input"):
             _input_file = arg
@@ -47,19 +46,20 @@ def main(argv):
             _offset = arg
         elif opt in ("-a", "--angle"):
             _angle = arg
-        elif opt in ("-r", "--radius"):
-            _radius = arg
         elif opt in ("-x", "--all-score"):
             _score = arg
             _all_score = True
         elif opt in ("-m", "--multiplication"):
             _is_multiplication_enabled = True
 
-    return _input_file, _output_file, int(_window), float(_score), int(_offset), int(_angle), int(_radius), bool(
+    return _input_file, _output_file, int(_window), float(_score), int(_offset), int(_angle), bool(
         _all_score), bool(_is_multiplication_enabled)
 
 
 def file_write(results, file, _is_multiplication_enabled):
+    _header = "G-QINDER Beta\nViglasky V., Osif B., Trizna L.\n2023\n\nRESULTS\n\ncolumn 1 = position, column 2 = " \
+              "sequence, column 3 = score\n\n"
+    file.write(_header)
     for key, value in results.items():
         (position, found_value, g4_found_value) = value
         file.write('%s\t%s\t\t\t%s\t\t\t%s\n' % (
@@ -69,7 +69,7 @@ def file_write(results, file, _is_multiplication_enabled):
 
 if __name__ == "__main__":
     try:
-        input_file, output_file, window, score, offset, angle, radius, is_all_score, is_multiplication_enabled = main(
+        input_file, output_file, window, score, offset, angle, is_all_score, is_multiplication_enabled = main(
             sys.argv[1:])
         file_name = os.path.split(input_file)[-1]
         name = file_name.split(".")
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     for _dir_name in score_file_names:
         _new_result_dirs.append(
             os.path.join(output_file, DIR, file_fasta[0] + "-window-" + str(window) + _dir_name + str(
-                score) + "-offset-" + str(offset) + "-angle-" + str(angle) + "-radius-" + str(radius) + ".txt"))
+                score) + "-offset-" + str(offset) + "-angle-" + str(angle) + ".txt"))
 
     if DIR in OPF:
         print('\nRe-run of Qinder on same input file\n')
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     startTime = time.time()
 
     _qinder = Qinder()
-    res_g, res_c = _qinder.qinder_app(file_in, window, score, offset, angle, radius, is_all_score)
+    res_g, res_c = _qinder.qinder_app(file_in, window, score, offset, angle, is_all_score)
 
     file_write(res_g, result_file_g, is_multiplication_enabled)
     is_all_score and file_write(res_c, result_file_c, is_multiplication_enabled)

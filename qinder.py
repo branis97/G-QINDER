@@ -11,9 +11,9 @@ def read_file(file_in):
     return l_header, list_seq
 
 
-def sequence_score(line, angle, radius):
+def sequence_score(line, angle):
     g_c_sum_value, a_t_sum_value = 0, 0
-    r = radius
+    r = 3
     g_ls = []
     c_ls = []
     sample_len = len(line)
@@ -93,7 +93,7 @@ def sequence_score(line, angle, radius):
 class Qinder:
 
     @staticmethod
-    def qinder_app(input_file, window, score, offset, angle, radius, is_all_score):
+    def qinder_app(input_file, window, score, offset, angle, is_all_score):
 
         limit = window
         offset = offset
@@ -106,8 +106,7 @@ class Qinder:
         whole_sequence = list_seq[0]
         for _offset in range(0, int(len(whole_sequence)), offset):
             _sequence, _score, _g4_score_g, _g4_score_c = sequence_score(whole_sequence[_offset:(limit + _offset)],
-                                                                         angle,
-                                                                         radius)
+                                                                         angle)
 
             if _score > score:
                 result_dict_g[str(_sequence)] = _offset, _score, _g4_score_g
