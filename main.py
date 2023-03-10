@@ -25,14 +25,14 @@ def main(argv):
     except getopt.GetoptError:
         print(
             '-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
-            '-f <offset> -a <angle> -m <multiplication show if "true">\n')
+            '-f <offset> -a <angle>\n')
         sys.exit(1)
 
     for opt, arg in opts:
         if opt in ('-h', "--help"):
             print('To run Qinder use the command line: \n')
             print('-i <input_file> -o <output_repository> -w <window> -s/x <score threshold/negatives included> '
-                  '-f <offset> -a <angle> -m <multiplication show if "true">\n')
+                  '-f <offset> -a <angle>\n')
             sys.exit()
         elif opt in ("-i", "--input"):
             _input_file = arg
